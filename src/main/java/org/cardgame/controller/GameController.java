@@ -1,5 +1,6 @@
 package org.cardgame.controller;
 
+import org.cardgame.games.GameEvaluator;
 import org.cardgame.model.Deck;
 import org.cardgame.model.Player;
 import org.cardgame.model.PlayingCard;
@@ -20,14 +21,16 @@ public class GameController {
     View view;
 
     GameState gameState;
+    GameEvaluator gameEvaluator;
 
-    public GameController(Deck deck, View view) {  // built elsewhere so needed in the constructor
+    public GameController(Deck deck, View view, GameEvaluator gameEvaluator) {  // built elsewhere so needed in the constructor
         this.deck = deck;
         this.view = view;
         // and configure the other data defined directly inside the current class
         this.players = new ArrayList<Player>();
         this.gameState = GameState.AddingPlayers;
         view.setController(this);
+        this.gameEvaluator = gameEvaluator;
     }
 
     public void run() {
@@ -82,41 +85,7 @@ public class GameController {
     }
 
     void evaluateWinner() {
-        Player bestPlayer = null;
-        int bestRank = -1;
-        int bestSuit = -1;
-
-
-        for (Player player : players) {
-            boolean newBestPlayer = false;
-
-            if (bestPlayer == null) {
-                newBestPlayer = true;
-            } else {
-                PlayingCard playingCard = player.getCard(0);
-                int thisRank = playingCard.getRank().value();
-                if (thisRank >= bestRank) {
-                    if (thisRank > bestRank) {
-                        newBestPlayer = true;
-                    } else {
-                        if (playingCard.getSuit().value() > bestSuit) {
-                            newBestPlayer = true;
-                        }
-                    }
-                }
-            }
-
-            if (newBestPlayer) {
-                bestPlayer = player;
-                PlayingCard playingCard = player.getCard(0);
-                bestRank = playingCard.getRank().value();
-                bestSuit = playingCard.getSuit().value();
-            }
-        }
-
-        winner = bestPlayer;
-
-
+        winner = gameEvaluator.evaluateWinner(players);
 
     }
 
