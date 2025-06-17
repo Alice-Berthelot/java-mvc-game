@@ -4,12 +4,14 @@ import org.cardgame.games.GameEvaluator;
 import org.cardgame.model.Deck;
 import org.cardgame.model.Player;
 import org.cardgame.model.PlayingCard;
-import org.cardgame.view.View;
+import org.cardgame.view.GameViewable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
+
+
 
     enum GameState{
         AddingPlayers, CardsDealt, WinnerRevealed;
@@ -18,12 +20,12 @@ public class GameController {
     Deck deck;
     List<Player> players;
     Player winner;
-    View view;
+    GameViewable view;
 
     GameState gameState;
     GameEvaluator gameEvaluator;
 
-    public GameController(Deck deck, View view, GameEvaluator gameEvaluator) {  // built elsewhere so needed in the constructor
+    public GameController(Deck deck, GameViewable view, GameEvaluator gameEvaluator) {  // built elsewhere so needed in the constructor
         this.deck = deck;
         this.view = view;
         // and configure the other data defined directly inside the current class
@@ -99,4 +101,15 @@ public class GameController {
         }
     }
 
+    void exitGame() {
+        System.exit(0);
+    }
+
+    public void nextAction(String nextChoice) {
+        if ("+q".equals(nextChoice)) {
+            exitGame();
+        } else {
+            startGame();
+        }
+    }
 }

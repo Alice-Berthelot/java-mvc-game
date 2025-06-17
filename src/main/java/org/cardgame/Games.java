@@ -3,12 +3,15 @@ package org.cardgame;
 import org.cardgame.controller.GameController;
 import org.cardgame.games.HighCardGameEvaluator;
 import org.cardgame.model.Deck;
-import org.cardgame.view.View;
+import org.cardgame.view.SwingView;
 
 public class Games {
 
         public static void main(String[] args) {
-            GameController gameController = new GameController(new Deck(), new View(), new HighCardGameEvaluator());
+            SwingView swingView = new SwingView();
+            swingView.createAndShowGUI();
+
+            GameController gameController = new GameController(new Deck(), swingView, new HighCardGameEvaluator());
             gameController.run();
         }
 
